@@ -11,8 +11,8 @@
     {{action}}
   </h1>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
-    <div *ngIf="isNameRequired" class="relative mb-6">
+  <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+    <div *ngIf="action==='Sign Up'" class="relative mb-6">
       <label for="name" class="block text-sm font-medium text-darkGray">
         Full Name
       </label>
@@ -21,14 +21,14 @@
         placeholder="Full Name"
         formControlName="name"
         [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-          'border-red-500': registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || isSubmitted)
+          'border-red-500': form.get('name')?.invalid && (form.get('name')?.touched || isSubmitted)
         }"
       />
       <span
-        *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.touched || registerForm.get('name')?.dirty || isSubmitted)"
+        *ngIf="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty || isSubmitted)"
         class="absolute left-0 top-full text-sm text-red-500"
       >
-        {{ registerForm.get('name') | validationError }}
+        {{ form.get('name') | validationError }}
       </span>
 
     </div>
@@ -41,14 +41,14 @@
         placeholder="Enter your email"
         formControlName="email"
         [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-          'border-red-500': registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || isSubmitted)
+          'border-red-500': form.get('email')?.invalid && (form.get('email')?.touched || isSubmitted)
         }"
       />
       <span
-        *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty || isSubmitted)"
+        *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty || isSubmitted)"
         class="absolute left-0 top-full text-sm text-red-500"
       >
-        {{ registerForm.get('email') | validationError }}
+        {{ form.get('email') | validationError }}
       </span>
     </div>
     <div class="relative mb-12">
@@ -60,17 +60,17 @@
         placeholder="Password"
         formControlName="password"
         [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-          'border-red-500': registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || isSubmitted)
+          'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched || isSubmitted)
         }"
       />
       <span class="absolute bottom-4 right-3 flex items-center cursor-pointer text-gray-400">
         o
       </span>
       <span
-        *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty || isSubmitted)"
+        *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty || isSubmitted)"
         class="absolute left-0 top-full text-sm text-red-500"
       >
-        {{ registerForm.get('password') | validationError }}
+        {{ form.get('password') | validationError }}
       </span>
     </div>
     <div class="flex justify-center">
