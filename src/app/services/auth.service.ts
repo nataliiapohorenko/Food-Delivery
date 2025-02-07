@@ -17,14 +17,22 @@ export class AuthService {
     name: string;
     email: string;
     password: string;
-  }): Observable<{ token: string }> {
+  }): Observable<string> {
     return this.http
-      .post<{
-        token: string;
-      }>(`${this.apiUrl}/${RoutingConstants.SIGNUP}`, data)
+      .post<string>(`${this.apiUrl}/${RoutingConstants.SIGNUP}`, data)
       .pipe(
         tap(response => {
-          this.setToken(response.token);
+          this.setToken(response);
+        })
+      );
+  }
+
+  login(data: { email: string; password: string }): Observable<string> {
+    return this.http
+      .post<string>(`${this.apiUrl}/${RoutingConstants.LOGIN}`, data)
+      .pipe(
+        tap(response => {
+          this.setToken(response);
         })
       );
   }
@@ -39,5 +47,9 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
   }
 }

@@ -8,21 +8,28 @@ import { RestaurantGuard } from './guards/restaurant.guard';
 import { FoodItemGuard } from './guards/food-item.guard';
 import { RoutingConstants } from './constants/routes.constants';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: RoutingConstants.HOME, pathMatch: 'full' },
-  { path: 'auth', component: SignUpComponent },
-  { path: RoutingConstants.HOME, component: HomeComponent },
+  { path: RoutingConstants.SIGNUP, component: SignUpComponent },
+  { path: RoutingConstants.LOGIN, component: LoginComponent },
+  {
+    path: RoutingConstants.HOME,
+    canActivate: [AuthGuard],
+    component: HomeComponent,
+  },
   {
     path: `${RoutingConstants.RESTAURANTS}/:${RoutingConstants.ID}`,
     component: RestaurantDetailsComponent,
-    canActivate: [RestaurantGuard],
+    canActivate: [AuthGuard, RestaurantGuard],
     resolve: { restaurant: RestaurantResolver },
   },
   {
     path: `${RoutingConstants.FOOD_ITEMS}/:${RoutingConstants.ID}`,
     component: FoodItemDetailsComponent,
-    canActivate: [FoodItemGuard],
+    canActivate: [AuthGuard, FoodItemGuard],
     resolve: { foodItem: FoodItemResolver },
   },
   { path: '**', redirectTo: RoutingConstants.HOME },
