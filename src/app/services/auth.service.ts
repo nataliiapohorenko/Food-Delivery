@@ -37,12 +37,28 @@ export class AuthService {
       );
   }
 
+  loginWithGoogle(googleToken: string): Observable<string> {
+    return this.http
+      .post<string>(`${this.apiUrl}/${RoutingConstants.GOOGLE}`, {
+        token: googleToken,
+      })
+      .pipe(
+        tap(response => {
+          this.setToken(response);
+        })
+      );
+  }
+
   setToken(token: string): void {
     localStorage.setItem('token', token);
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    window.google.accounts.id.disableAutoSelect();
+    window.google.accounts.id.revoke(localStorage.getItem('token'), () => {
+      console.log('User signed out.');
+      localStorage.removeItem('token');
+    });
   }
 
   getToken(): string | null {

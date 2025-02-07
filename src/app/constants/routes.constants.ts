@@ -6,4 +6,5 @@ export const RoutingConstants = {
   AUTH: 'auth',
   LOGIN: 'login',
   SIGNUP: 'signup',
+  GOOGLE: 'google',
 };
