@@ -5,12 +5,13 @@ import { FoodItemInterface } from '../shared/models/food-item.model';
 import { environment } from '../../environments/environment';
 import { CardTypeEnum } from '../shared/models/card-type.enum';
 import { BaseService } from './base.service';
+import { RoutingConstants } from '../constants/routes.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FoodItemsService extends BaseService<FoodItemInterface> {
-  protected apiUrl = `${environment.apiUrl}/food-items`;
+  protected apiUrl = `${environment.apiUrl}/${RoutingConstants.FOOD_ITEMS}`;
 
   override getItems(): Observable<FoodItemInterface[]> {
     return super.getItems().pipe(

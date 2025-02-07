@@ -1,30 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { FoodItemsService } from '../../services/food-items.service';
 import { RestaurantInterface } from '../../shared/models/restaurant.model';
 import { FoodItemInterface } from '../../shared/models/food-item.model';
-import { PrimaryCardComponent } from '../../shared/components/primaryCard/primary-card.component';
-import { SecondaryCardComponent } from '../../shared/components/secondaryCard/secondary-card.component';
+import { PrimaryCardComponent } from '../../shared/components/primary-card/primary-card.component';
+import { SecondaryCardComponent } from '../../shared/components/secondary-card/secondary-card.component';
 import { CardTypeEnum } from '../../shared/models/card-type.enum';
 import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { RoutingConstants } from '../../constants/routes.constants';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  imports: [PrimaryCardComponent, SecondaryCardComponent, CommonModule],
+  imports: [
+    PrimaryCardComponent,
+    SecondaryCardComponent,
+    CommonModule,
+    RouterModule,
+  ],
   standalone: true,
 })
 export class HomeComponent implements OnInit {
   restaurants$!: Observable<RestaurantInterface[]>;
   foodItems$!: Observable<FoodItemInterface[]>;
-
-  constructor(
-    private restaurantsService: RestaurantsService,
-    private foodItemsService: FoodItemsService,
-    private router: Router
-  ) {}
+  private router: Router = inject(Router);
+  private restaurantsService: RestaurantsService = inject(RestaurantsService);
+  private foodItemsService: FoodItemsService = inject(FoodItemsService);
+  private authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
     this.restaurants$ = this.restaurantsService.items$;
@@ -45,14 +50,8 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  goToDetails(id: string, type: CardTypeEnum): void {
-    switch (type) {
-      case CardTypeEnum.Restaurant:
-        this.router.navigate(['/restaurants', id]);
-        break;
-      case CardTypeEnum.FoodItem:
-        this.router.navigate(['/food-items', id]);
-        break;
-    }
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate([RoutingConstants.LOGIN]);
   }
 }

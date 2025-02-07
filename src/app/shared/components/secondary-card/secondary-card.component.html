@@ -1,26 +1,8 @@
 <div
   class="w-[153px] bg-white rounded-xl overflow-hidden shadow-lg relative"
-  (click)="selectItem()"
-  (keydown.enter)="selectItem()"
-  tabindex="0"
 >
   <div class="relative">
-    <div class="absolute top-2 right-2 z-10">
-      <button
-        [ngClass]="{
-          'w-[28px] h-[28px] flex justify-center items-center rounded-full shadow-md hover:bg-opacity-50 transition': true,
-          'bg-primary shadow-red-100': data.isFavourite,
-          'bg-[rgba(255,255,255,0.2)] backdrop-blur-sm shadow-md hover:bg-primary': !data.isFavourite
-        }"
-        (click)="toggleFavourite()"
-      >
-      <img
-        [src]="!data.isFavourite ? 'assets/icons/grey-heart.svg' : 'assets/icons/heart.svg'"
-        alt="like"
-        class="opacity-100 transition"
-      />
-      </button>
-    </div>      
+    <like-button [data]="data" (toggleFavorite)="toggleFavourite($event)"/>
   </div>
 
   <ng-container [ngSwitch]="data.type">
@@ -39,7 +21,7 @@
       </div>
 
       <div class="flex items-center mb-[8px] mt-5">
-        <h2 class="text-sm font-semibold text-gray-900 mr-1">
+        <h2 class="text-sm font-semibold text-gray-900 mr-1 w-[15ch] whitespace-nowrap overflow-hidden text-ellipsis">
           {{ data.name }}
         </h2>
         <ng-container *ngIf="restaurantData.verified">
@@ -47,17 +29,7 @@
         </ng-container>
       </div>
 
-      <div class="text-xs font-medium text-[#515154] mb-[8px] flex items-center">
-        <img src="assets/icons/deliveryMan.svg" alt="delivery man">
-        <span class="ml-1 mr-2">
-          {{ restaurantData.delivery.cost === 0
-            ? 'free'
-            : '$' + restaurantData.delivery.cost}}
-        </span>
-        <img src="assets/icons/clock.svg" alt="delivery man">
-        <span class="ml-1">
-          {{ restaurantData.delivery.time }}-{{ restaurantData.delivery.time + 5 }} mins</span>
-      </div>
+      <delivery-widget [data]="restaurantData"/>
   
       <div class="flex flex-wrap gap-2">
         <span
@@ -70,24 +42,22 @@
     </div>
     
     <ng-container *ngSwitchCase="CardTypeEnum.FoodItem" class="p-[11px]">
-      <div class="relative">
+      <div class="relative mb-2">
         <img
-          class="w-100 h-[146px] rounded-xl object-cover"
+          class="w-full h-[146px] rounded-xl object-cover"
           [src]="data.imgUrl"
           [alt]="data.name"
         />
-        <div class="bg-white rounded-full px-2 py-1 shadow-md flex items-center shadow-orange-100 -translate-y-1/2 max-w-[70px]">
-          <span class="text-xs font-semibold mr-1">
-            {{ data.rating }} 
-          </span>
-          <img src="assets/icons/star.svg" alt="stars">
-          <span class="ml-0.5 text-[8px] text-[#9796A1] " >
-            ({{data.feedbacks | RatingConverter}})
-          </span>
-        </div>
+        <rating-widget
+          [ngClass]="{
+            'bg-white rounded-full px-2 py-1 shadow-md shadow-orange-100 absolute': true,
+            'top-2 left-2': data.type === CardTypeEnum.Restaurant,
+            '-bottom-2': data.type === CardTypeEnum.FoodItem
+          }"
+          [data]="data" type="component"></rating-widget>
       </div>
       <div class="p-2">
-        <h2 class="text-sm/1 font-semibold text-gray-900 mb-2">
+        <h2 class="text-sm/1 font-semibold text-gray-900 mb-2 w-[15ch] whitespace-nowrap overflow-hidden text-ellipsis">
           {{ data.name }}
         </h2>
         <span class="absolute top-2 left-2 bg-white text-black text-sm font-bold px-2 py-1 rounded-full shadow">

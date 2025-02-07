@@ -1,5 +1,9 @@
 <header class="flex items-center px-6 py-8 lg:mb-4">
   <nav class="size-10 rounded-lg shadow-md"></nav>
+  <button (click)="logout()" class="flex p-2 pr-4 bg-primary rounded-full text-white items-center">
+    <img src="assets/icons/logout.svg" alt="logout" class="mr-2">
+    Logout
+  </button>
   <div class="grow text-center">
     <h3 class="align-center text-base">Deliver to</h3>
     <p class="text-primary">4102  Pretty View Lane</p>
@@ -26,7 +30,7 @@
       <app-card class="mb-4" *ngFor="let restaurant of restaurants"
         [data]="restaurant"
         (favouriteToggled)="toggleFavourite($event.id, $event.type)"
-        (goToDetails)="goToDetails($event.id, $event.type)"
+        [routerLink]="['/restaurants', restaurant._id]"
         >
       </app-card>
     </div>
@@ -40,7 +44,7 @@
       <app-secondary-card class="mb-4" *ngFor="let foodItem of foodItems"
         [data]="foodItem"
         (favouriteToggled)="toggleFavourite($event.id, $event.type)"
-        (goToDetails)="goToDetails($event.id, $event.type)"
+        [routerLink]="['/food-items', foodItem._id]"
         >
       </app-secondary-card>
     </div>

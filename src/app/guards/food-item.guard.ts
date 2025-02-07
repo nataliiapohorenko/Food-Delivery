@@ -1,4 +1,3 @@
-// restaurant.guard.ts
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
@@ -7,17 +6,17 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { RestaurantsService } from '../services/restaurants.service';
 import { catchError, map } from 'rxjs/operators';
+import { FoodItemsService } from '../services/food-items.service';
 import { RoutingConstants } from '../constants/routes.constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RestaurantGuard implements CanActivate {
+export class FoodItemGuard implements CanActivate {
   routingConstants = RoutingConstants;
   constructor(
-    private restaurantsService: RestaurantsService,
+    private foodItemsService: FoodItemsService,
     private router: Router
   ) {}
 
@@ -26,12 +25,12 @@ export class RestaurantGuard implements CanActivate {
     if (!id) {
       return of(this.router.createUrlTree([this.routingConstants.HOME]));
     }
-    return this.restaurantsService.getItems().pipe(
-      map(restaurants => {
-        const restaurantExists = restaurants.some(
-          restaurant => restaurant._id === id
+    return this.foodItemsService.getItems().pipe(
+      map(foodItems => {
+        const foodItemExists = foodItems.some(
+          foodItems => foodItems._id === id
         );
-        if (restaurantExists) {
+        if (foodItemExists) {
           return true;
         } else {
           return this.router.createUrlTree([this.routingConstants.HOME]);

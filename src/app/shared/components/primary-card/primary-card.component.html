@@ -1,0 +1,65 @@
+<div
+  class="w-[266px] bg-white rounded-xl overflow-hidden shadow-lg relative"
+>
+
+  <div class="relative">
+    <img
+      class="w-full h-[136px] rounded-xl object-cover"
+      [src]="data.imgUrl"
+      [alt]="data.name"
+    />
+
+    <rating-widget
+      [ngClass]="{
+        'bg-white rounded-full px-2 py-1 shadow-md shadow-orange-100 absolute ': true,
+        'top-2 left-2': data.type === CardTypeEnum.Restaurant,
+        '-bottom-2': data.type === CardTypeEnum.FoodItem
+      }"
+      [data]="data" type="component"
+    />
+
+    <like-button [data]="data" (toggleFavorite)="toggleFavourite($event)"/>
+  </div>
+
+  <ng-container [ngSwitch]="data.type">
+    <div *ngSwitchCase="CardTypeEnum.Restaurant" class="p-[11px]">
+      <div class="flex items-center mb-[8px]">
+        <h2 class="text-sm/1 font-semibold text-gray-900 mr-1">
+          {{ data.name }}
+        </h2>
+        <ng-container *ngIf="restaurantData.verified">
+          <img src="assets/icons/check.svg" alt="checked" />
+        </ng-container>
+      </div>
+
+      <delivery-widget [data]="restaurantData"/>
+
+      <div class="flex flex-wrap gap-2">
+        <span
+          *ngFor="let categorie of restaurantData.categories"
+          class="text-[10px] text-[#515154] bg-gray-100 text-gray-700 p-[5px] rounded-lg font-medium"
+        >
+          {{ categorie | uppercase }}
+        </span>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="CardTypeEnum.FoodItem" class="pl-[11px] pb-3">
+      <h2 class="text-sm/1 font-semibold text-gray-900 mr-1 mb-2 mt-4">
+        {{ data.name }}
+      </h2>
+      <span
+        class="absolute top-2 left-2 bg-white text-black text-sm font-bold px-2 py-1 rounded-full shadow"
+      >
+        <span class="text-xs text-primary">$</span>{{ foodItemData.price }}
+      </span>
+      <p class="text-xs text-gray-500 w-[36ch] whitespace-nowrap overflow-hidden text-ellipsis">
+        {{ foodItemData.description }}
+      </p>
+    </div>
+
+    <div *ngSwitchDefault class="p-[11px]">
+      <p>Unknown Card Type</p>
+    </div>
+  </ng-container>
+</div>

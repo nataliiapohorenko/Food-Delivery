@@ -1,100 +1,72 @@
-<header class="p-6">
-  <div class="relative">
-    <img [src]="restaurant.imgUrl" [alt]="restaurant.name"
-    class="rounded-xl w-full h-[150px] object-cover"
-  >
-    <div class="absolute size-24 -bottom-12 left-[50%] -translate-x-1/2">
-      <div class="relative size-24">
-        <img [src]="restaurant.imgUrl" [alt]="restaurant.name"
-          class="size-24 object-cover absolute border-[16px] rounded-full border-white"
+<div *ngIf="restaurantDetails$ | async as restaurant">
+  <header class="p-6">
+    <div class="relative">
+      <img [src]="restaurant.imgUrl" [alt]="restaurant.name"
+      class="rounded-xl w-full h-[150px] object-cover"
+    >
+      <div class="absolute size-24 -bottom-12 left-[50%] -translate-x-1/2">
+        <div class="relative size-24">
+          <img [src]="restaurant.imgUrl" [alt]="restaurant.name"
+            class="size-24 object-cover absolute border-[16px] rounded-full border-white"
+          >
+          <img src="assets/icons/check.svg" alt="verified"
+            class="absolute size-6 bottom-4 right-4 border-4 rounded-full border-white"
+          >
+        </div>
+      </div>
+      <like-button [data]="restaurant" (toggleFavorite)="toggleFavourite(restaurant._id, restaurant.type)"/>
+      <button class="absolute size-10 bg-white top-2 left-2 rounded-xl text-xl font-bold" routerLink="/home">
+        &lt;
+      </button>  
+    </div>
+    <div class="flex flex-col items-center mt-12">
+      <h1 class="mb-1 text-xl font-bold">{{restaurant.name}}</h1>
+      <address class="mb-2 text-xs text-darkGray">4102  Pretty View Lanenda </address>
+      <div class="flex flex-wrap gap-2 mb-2">
+        <span
+          *ngFor="let categorie of restaurant.categories"
+          class="text-[10px] text-darkGray bg-gray-100 p-[5px] rounded-lg font-medium"
         >
-        <img src="assets/icons/check.svg" alt="verified"
-          class="absolute size-6 bottom-4 right-4 border-4 rounded-full border-white"
-        >
+          {{ categorie | uppercase }}
+        </span>
+      </div>
+      <delivery-widget [data]="restaurant"/>
+      <rating-widget [data]="restaurant" type="page" />
+    </div>
+  </header>
+  <main class="pl-6 pb-6">
+    <div>
+      <h2 class="text-lg font-semibold mb-4">Featured items 
+        <span class="text-xs text-white bg-yellow-300 px-1 py-0.5 rounded-md">{{restaurant.foodItems.length}}</span>
+      </h2>
+      <div
+        class="flex overflow-x-auto space-x-4"
+      >
+        <app-card class="mb-4 cursor-pointer" *ngFor="let foodItem of sortedFoodItems$ |async"
+          [data]="foodItem"
+          (favouriteToggled)="toggleFavourite($event.id, $event.type)"
+          [routerLink]="['/', routingConstants.FOOD_ITEMS, foodItem._id]"
+          >
+        </app-card>
       </div>
     </div>
-    <div class="absolute top-2 right-2">
-      <button
-        [ngClass]="{
-          'w-[28px] h-[28px] flex justify-center items-center rounded-full shadow-md hover:bg-opacity-50 transition': true,
-          'bg-primary ': restaurant.isFavourite,
-          'bg-[rgba(255,255,255,0.2)] backdrop-blur-sm hover:bg-primary': !restaurant.isFavourite
-        }"
+    <div>
+      <div class="flex overflow-x-auto space-x-4 mt-8 mb-6 pb-4">
+        <button class="py-2 px-4 bg-primary text-white rounded-full">All</button>
+        <button class="py-2 px-4 text-[#5B5B5E] border rounded-full">Legends</button>
+        <button class="py-2 px-4 text-[#5B5B5E] border rounded-full">Bundles</button>
+        <button class="py-2 px-4 text-[#5B5B5E] border rounded-full">Additional Bundles</button>
+      </div>
+      <div
+        class="flex flex-wrap justify-around mr-6"
       >
-        <img src="assets/icons/heart.svg" alt="like" class="opacity-100 transition">
-      </button>
-    </div> 
-    <button class="absolute size-10 bg-white top-2 left-2 rounded-xl"><</button>  
-  </div>
-  <div class="flex flex-col items-center mt-12">
-    <h1 class="mb-1 text-xl font-bold">{{restaurant.name}}</h1>
-    <address class="mb-2 text-xs text-[#9796A1]">4102  Pretty View Lanenda </address>
-    <div class="flex flex-wrap gap-2 mb-2">
-      <span
-        *ngFor="let categorie of restaurant.categories"
-        class="text-[10px] text-[#515154] bg-gray-100 text-gray-700 p-[5px] rounded-lg font-medium"
-      >
-        {{ categorie | uppercase }}
-      </span>
+        <app-secondary-card class="mb-4 cursor-pointer" *ngFor="let foodItem of restaurant.foodItems"
+          [data]="foodItem"
+          (favouriteToggled)="toggleFavourite($event.id, $event.type)"
+          [routerLink]="['/', routingConstants.FOOD_ITEMS, foodItem._id]"
+          >
+        </app-secondary-card>
+      </div>
     </div>
-    <div class="text-xs font-medium text-[#515154] flex items-center mb-2">
-      <img src="assets/icons/deliveryMan.svg" alt="delivery man" />
-      <span class="ml-1 mr-2">
-        {{
-          restaurant.delivery.cost === 0
-            ? 'free delivery'
-            : '$' + restaurant.delivery.cost + ' delivery'
-        }}
-      </span>
-      <img src="assets/icons/clock.svg" alt="delivery man" />
-      <span class="ml-1">
-        {{ restaurant.delivery.time }}-{{ restaurant.delivery.time + 5 }} mins
-      </span>
-    </div>
-    <div class="flex items-center">
-      <span class="text-xs font-semibold mr-1">
-        {{ restaurant.rating }} 
-      </span>
-      <img src="assets/icons/star.svg" alt="stars">
-      <span class="ml-0.5 text-[8px] text-[#9796A1] " >
-        ({{restaurant.feedbacks | RatingConverter}})
-      </span>
-      <span class="ml-1 text-primary text-xs">See review ></span>
-    </div>
-  </div>
-</header>
-<main class="pl-6 pb-6">
-  <div>
-    <h2 class="text-lg font-semibold mb-4">Featured items 
-      <span class="text-xs text-white bg-yellow-300 px-1 py-0.5 rounded-md">{{restaurant.foodItems.length}}</span>
-    </h2>
-    <div
-      class="flex overflow-x-auto space-x-4"
-    >
-      <app-card class="mb-4" *ngFor="let foodItem of sortedFoodItems"
-        [data]="foodItem"
-        (favouriteToggled)="toggleFavourite($event.id, $event.type)"
-        (goToDetails)="goToDetails($event.id, $event.type)"
-        >
-      </app-card>
-    </div>
-  </div>
-  <div>
-    <div class="flex overflow-x-auto space-x-4 mt-8 mb-6 pb-4">
-      <button class="py-2 px-4 bg-primary text-white rounded-full">All</button>
-      <button class="py-2 px-4 text-[#5B5B5E] border rounded-full">Legends</button>
-      <button class="py-2 px-4 text-[#5B5B5E] border rounded-full">Bundles</button>
-      <button class="py-2 px-4 text-[#5B5B5E] border rounded-full">Additional Bundles</button>
-    </div>
-    <div
-      class="flex flex-wrap justify-between mr-6"
-    >
-      <app-secondary-card class="mb-4" *ngFor="let foodItem of restaurant.foodItems"
-        [data]="foodItem"
-        (favouriteToggled)="toggleFavourite($event.id, $event.type)"
-        (goToDetails)="goToDetails($event.id, $event.type)"
-        >
-      </app-secondary-card>
-    </div>
-  </div>
-</main>
+  </main>
+</div>

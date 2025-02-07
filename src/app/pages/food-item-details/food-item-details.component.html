@@ -1,3 +1,43 @@
-<div>
-  {{foodItem.name}}
+<div  class="p-6">
+  <header>
+    <div class="relative mb-6">
+      <img [src]="foodItem.imgUrl" [alt]="foodItem.name"
+        class="rounded-xl w-full h-52 object-cover"
+      >
+      <like-button [data]="foodItem" />
+      <button class="absolute size-10 bg-white top-2 left-2 rounded-xl text-xl font-bold" [routerLink]="['/', routingConstants.RESTAURANTS, foodItem.restaurantId]">
+        &lt;
+      </button>  
+    </div>
+    <h1 class="text-3xl font-semibold mb-4">{{foodItem.name}}</h1>
+  </header>
+  <main>
+    <rating-widget [data]="foodItem" type="page" />
+    <div class="flex justify-between items-center mb-4">
+      <span class="text-2xl">
+        <span class="text-xl font-medium">$</span>{{ foodItem.price }}
+      </span>
+      <div>
+        <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md">-</button>
+        <span class="mx-2 font-semibold">02</span>
+        <button class="size-6 text-center bg-primary text-white rounded-full shadow-md">+</button>
+      </div>
+    </div>
+    <p class="mb-6 text-sm text-darkGray">
+      {{ foodItem.description }}
+    </p>
+    <div>
+      <h3 class="text-lg font-semibold mb-4">Choice of Add On</h3>
+      <div *ngFor="let addon of foodItem.addons">
+        <label class="flex items-center cursor-pointer mb-2">
+          <span class="grow text-xs">{{ addon.name }}</span>
+          <span class="text-xs text-darkGray mr-4">+${{ addon.price }}</span>
+          <input type="checkbox" class="sr-only peer" />
+          <div class="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-primary peer-checked:bg-primary transition-all duration-200 ease-in-out 
+              peer-checked:shadow-[inset_0_0_0_4px_white]">
+          </div>
+        </label>
+      </div>  
+    </div>
+  </main>
 </div>
