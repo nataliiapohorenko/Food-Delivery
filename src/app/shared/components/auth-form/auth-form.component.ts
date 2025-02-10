@@ -37,29 +37,7 @@ export class AuthComponent implements OnInit {
   isSubmitted = false;
 
   ngOnInit(): void {
-    if (window.google && window.google.accounts) {
-      window.google.accounts.id.initialize({
-        client_id: environment.googleClientId,
-        callback: (response: { credential: string }) =>
-          this.handleGoogleLogin(response.credential),
-      });
-      window.google.accounts.id.renderButton(
-        document.getElementById('googleSignInButton'),
-        { theme: 'outline', size: 'large' }
-      );
-    } else {
-      console.error('Google API not loaded');
-    }
-  }
-
-  private handleGoogleLogin(googleToken: string): void {
-    this.authService.loginWithGoogle(googleToken).subscribe({
-      next: () => {
-        this.router.navigate([RoutingConstants.HOME]);
-        console.log('Google Login Successful');
-      },
-      error: err => console.error('Google Auth Error:', err),
-    });
+    this.initializeGoogleLogIn();
   }
 
   onSubmit(event: Event): void {
@@ -71,5 +49,33 @@ export class AuthComponent implements OnInit {
     } else {
       this.sendLoginForm.emit(this.form.value as LoginFormInterface);
     }
+  }
+
+  private initializeGoogleLogIn(): void {
+    setTimeout(() => {
+      if (window.google?.accounts) {
+        window.google.accounts.id.initialize({
+          client_id: environment.googleClientId,
+          callback: (response: { credential: string }) =>
+            this.handleGoogleLogin(response.credential),
+        });
+        window.google.accounts.id.renderButton(
+          document.getElementById('googleSignInButton'),
+          { theme: 'outline', size: 'large' }
+        );
+      } else {
+        console.error('Google API not loaded');
+      }
+    }, 500);
+  }
+
+  private handleGoogleLogin(googleToken: string): void {
+    this.authService.loginWithGoogle(googleToken).subscribe({
+      next: () => {
+        this.router.navigate([RoutingConstants.HOME]);
+        console.log('Google Login Successful');
+      },
+      error: err => console.error('Google Auth Error:', err),
+    });
   }
 }
