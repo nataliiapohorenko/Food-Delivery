@@ -110,8 +110,12 @@
   </div>
 
   <div class="flex justify-around m-auto md:w-2/3">
-    <button class="w-36 px-4 py-2 bg-facebook rounded-full shadow-lg shadow-facebook-300 text-lg">
-      Facebook
+    <button class="flex items-center justify-center w-44 h-10 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded-md 
+      shadow-sm hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500;" (click)="loginWithFacebook()">
+      <img src="assets/icons/facebook.svg"
+           alt="Google Logo"
+           class="w-5 h-5 mr-1">
+      <span class="font-medium">Sign in with Facebook</span>
     </button>
     <div id="googleSignInButton"></div>
   </div>

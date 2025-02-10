@@ -5,6 +5,7 @@ import {
   EventEmitter,
   OnInit,
   inject,
+  OnDestroy,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -17,6 +18,7 @@ import {
 } from '../../models/auth-form.model';
 import { AuthService } from '../../../services/auth.service';
 import { environment } from '../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'auth-form',
@@ -24,13 +26,14 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ValidationError, RouterLink],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   @Input() form!: FormGroup;
   @Input() action!: string;
   @Output() sendLoginForm = new EventEmitter<LoginFormInterface>();
   @Output() sendSignUpForm = new EventEmitter<SignUpFormInterface>();
   private router: Router = inject(Router);
   private authService = inject(AuthService);
+  private subscriptions: Subscription = new Subscription();
 
   RoutingConstants = RoutingConstants;
 
@@ -48,6 +51,22 @@ export class AuthComponent implements OnInit {
       this.sendSignUpForm.emit(this.form.value as SignUpFormInterface);
     } else {
       this.sendLoginForm.emit(this.form.value as LoginFormInterface);
+    }
+  }
+
+  async loginWithFacebook() {
+    try {
+      const fbToken = await this.authService.loginWithFacebook();
+
+      const sub = this.authService
+        .sendFacebookTokenToBackend(fbToken)
+        .subscribe({
+          next: () => this.router.navigate([RoutingConstants.HOME]),
+          error: err => console.error('Backend login failed:', err),
+        });
+      this.subscriptions.add(sub);
+    } catch (error) {
+      console.error('Facebook login failed:', error);
     }
   }
 
@@ -70,12 +89,17 @@ export class AuthComponent implements OnInit {
   }
 
   private handleGoogleLogin(googleToken: string): void {
-    this.authService.loginWithGoogle(googleToken).subscribe({
+    const sub = this.authService.loginWithGoogle(googleToken).subscribe({
       next: () => {
         this.router.navigate([RoutingConstants.HOME]);
         console.log('Google Login Successful');
       },
       error: err => console.error('Google Auth Error:', err),
     });
+    this.subscriptions.add(sub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
