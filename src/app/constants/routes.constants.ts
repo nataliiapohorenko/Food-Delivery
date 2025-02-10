@@ -3,7 +3,6 @@ export const RoutingConstants = {
   RESTAURANTS: 'restaurants',
   FOOD_ITEMS: 'food-items',
   ID: 'id',
-  AUTH: 'auth',
   LOGIN: 'login',
   SIGNUP: 'signup',
 };

@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { RoutingConstants } from '../constants/routes.constants';
+import { ApiConstants } from '../constants/api.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/${RoutingConstants.AUTH}`;
+  private googleUrl = `${environment.apiUrl}/${ApiConstants.AUTH}`;
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +20,7 @@ export class AuthService {
     password: string;
   }): Observable<string> {
     return this.http
-      .post<string>(`${this.apiUrl}/${RoutingConstants.SIGNUP}`, data)
+      .post<string>(`${this.googleUrl}/${RoutingConstants.SIGNUP}`, data)
       .pipe(
         tap(response => {
           this.setToken(response);
@@ -29,7 +30,19 @@ export class AuthService {
 
   login(data: { email: string; password: string }): Observable<string> {
     return this.http
-      .post<string>(`${this.apiUrl}/${RoutingConstants.LOGIN}`, data)
+      .post<string>(`${this.googleUrl}/${RoutingConstants.LOGIN}`, data)
+      .pipe(
+        tap(response => {
+          this.setToken(response);
+        })
+      );
+  }
+
+  loginWithGoogle(googleToken: string): Observable<string> {
+    return this.http
+      .post<string>(`${this.googleUrl}/${ApiConstants.GOOGLE}`, {
+        token: googleToken,
+      })
       .pipe(
         tap(response => {
           this.setToken(response);
@@ -42,7 +55,9 @@ export class AuthService {
   }
 
   logout(): void {
+    window.google.accounts.id.disableAutoSelect();
     localStorage.removeItem('token');
+    console.log('User logged out.');
   }
 
   getToken(): string | null {

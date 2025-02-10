@@ -1,5 +1,5 @@
 <header class="flex items-center px-6 py-8 lg:mb-4">
-  <nav class="size-10 rounded-lg shadow-md"></nav>
+  <!-- <nav class="size-10 rounded-lg shadow-md"></nav> -->
   <button (click)="logout()" class="flex p-2 pr-4 bg-primary rounded-full text-white items-center">
     <img src="assets/icons/logout.svg" alt="logout" class="mr-2">
     Logout
@@ -25,7 +25,7 @@
     </div>
     <div 
       *ngIf="(restaurants$ | async) as restaurants"
-      class="flex overflow-x-auto space-x-4"
+      class="flex overflow-x-auto space-x-4 md:scrollbar md:scrollbar-thin md:scrollbar-track-gray-100 md:scrollbar-thumb-gray-500 scrollbar-none"
     >
       <app-card class="mb-4" *ngFor="let restaurant of restaurants"
         [data]="restaurant"

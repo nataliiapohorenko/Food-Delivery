@@ -1,84 +1,86 @@
 <div class="relative overflow-hidden p-6">
   <div class="absolute top-0 -left-8 size-16 rounded-full bg-primary"></div>
   <div class="absolute top-4 -left-4 size-6 rounded-full bg-white"></div>
-  <div class="absolute -top-20 left-0 size-36 rounded-full bg-secondary"></div>
+  <div class="absolute -top-20 left-0 size-36 rounded-full bg-pink-100"></div>
   <div class="absolute -top-24 -right-24 size-44 rounded-full bg-primary"></div>
 
-  <h1 [ngClass]="{
-    'mt-16 mb-6 text-3xl font-semibold' : true,
-    'mt-28' : action === 'Login'
-  }">
-    {{action}}
-  </h1>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
-    <div *ngIf="action==='Sign Up'" class="relative mb-6">
-      <label for="name" class="block text-sm font-medium text-darkGray">
-        Full Name
-      </label>
-      <input
-        type="text"
-        placeholder="Full Name"
-        formControlName="name"
-        [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-          'border-red-500': form.get('name')?.invalid && (form.get('name')?.touched || isSubmitted)
-        }"
-      />
-      <span
-        *ngIf="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty || isSubmitted)"
-        class="absolute left-0 top-full text-sm text-red-500"
-      >
-        {{ form.get('name') | validationError }}
-      </span>
-
-    </div>
-    <div class="relative mb-6">
-      <label for="email" class="block text-sm font-medium text-darkGray">
-        Email
-      </label>
-      <input
-        type="text"
-        placeholder="Enter your email"
-        formControlName="email"
-        [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-          'border-red-500': form.get('email')?.invalid && (form.get('email')?.touched || isSubmitted)
-        }"
-      />
-      <span
-        *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty || isSubmitted)"
-        class="absolute left-0 top-full text-sm text-red-500"
-      >
-        {{ form.get('email') | validationError }}
-      </span>
-    </div>
-    <div class="relative mb-12">
-      <label for="password"class="block text-sm font-medium text-darkGray">
-        Password
-      </label>
-      <input
-        type="password"
-        placeholder="Password"
-        formControlName="password"
-        [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-          'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched || isSubmitted)
-        }"
-      />
-      <span class="absolute bottom-4 right-3 flex items-center cursor-pointer text-gray-400">
-        o
-      </span>
-      <span
-        *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty || isSubmitted)"
-        class="absolute left-0 top-full text-sm text-red-500"
-      >
-        {{ form.get('password') | validationError }}
-      </span>
-    </div>
-    <div class="flex justify-center">
-      <button type="submit" class=" px-24 py-4 bg-primary rounded-full shadow-lg shadow-orange-300 text-lg text-white">
-        {{action}}
-      </button>
-    </div>
-  </form>
+  <div class="md:w-2/3 m-auto">
+    <h1 [ngClass]="{
+      'mt-16 mb-6 text-3xl font-semibold' : true,
+      'mt-28' : action === 'Login'
+    }">
+      {{action}}
+    </h1>
+  
+    <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+      <div *ngIf="action==='Sign Up'" class="relative mb-6">
+        <label for="name" class="block text-sm font-medium text-darkGray">
+          Full Name
+        </label>
+        <input
+          type="text"
+          placeholder="Full Name"
+          formControlName="name"
+          [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
+            'border-red-500': form.get('name')?.invalid && (form.get('name')?.touched || isSubmitted)
+          }"
+        />
+        <span
+          *ngIf="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty || isSubmitted)"
+          class="absolute left-0 top-full text-sm text-red-500"
+        >
+          {{ form.get('name') | validationError }}
+        </span>
+  
+      </div>
+      <div class="relative mb-6">
+        <label for="email" class="block text-sm font-medium text-darkGray">
+          Email
+        </label>
+        <input
+          type="text"
+          placeholder="Enter your email"
+          formControlName="email"
+          [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
+            'border-red-500': form.get('email')?.invalid && (form.get('email')?.touched || isSubmitted)
+          }"
+        />
+        <span
+          *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty || isSubmitted)"
+          class="absolute left-0 top-full text-sm text-red-500"
+        >
+          {{ form.get('email') | validationError }}
+        </span>
+      </div>
+      <div class="relative mb-12">
+        <label for="password"class="block text-sm font-medium text-darkGray">
+          Password
+        </label>
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
+            'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched || isSubmitted)
+          }"
+        />
+        <span class="absolute bottom-4 right-3 flex items-center cursor-pointer text-gray-400">
+          o
+        </span>
+        <span
+          *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty || isSubmitted)"
+          class="absolute left-0 top-full text-sm text-red-500"
+        >
+          {{ form.get('password') | validationError }}
+        </span>
+      </div>
+      <div class="flex justify-center">
+        <button type="submit" class=" px-24 py-4 bg-primary rounded-full shadow-lg shadow-orange-300 text-lg text-white">
+          {{action}}
+        </button>
+      </div>
+    </form>
+  </div>
 
   <div class="flex justify-center">
     <button *ngIf="action==='Login'" class="text-sm text-primary mt-6">
@@ -107,12 +109,10 @@
     <div class="flex-grow border-t border-darkGray"></div>
   </div>
 
-  <div class="flex justify-center">
+  <div class="flex justify-around m-auto md:w-2/3">
     <button class="w-36 px-4 py-2 bg-facebook rounded-full shadow-lg shadow-facebook-300 text-lg">
       Facebook
     </button>
-    <button class="w-36 ml-4 px-4 py-2 bg-google rounded-full shadow-lg shadow-google-300 text-lg">
-      Google
-    </button>
+    <div id="googleSignInButton"></div>
   </div>
 </div>

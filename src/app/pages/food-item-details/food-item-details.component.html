@@ -1,8 +1,8 @@
-<div  class="p-6">
+<div  class="p-6 md:w-2/3 m-auto">
   <header>
     <div class="relative mb-6">
       <img [src]="foodItem.imgUrl" [alt]="foodItem.name"
-        class="rounded-xl w-full h-52 object-cover"
+        class="rounded-xl w-full h-52 md:h-84 object-cover"
       >
       <like-button [data]="foodItem" />
       <button class="absolute size-10 bg-white top-2 left-2 rounded-xl text-xl font-bold" [routerLink]="['/', routingConstants.RESTAURANTS, foodItem.restaurantId]">
@@ -13,7 +13,7 @@
   </header>
   <main>
     <rating-widget [data]="foodItem" type="page" />
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-between items-center mt-4 mb-4">
       <span class="text-2xl">
         <span class="text-xl font-medium">$</span>{{ foodItem.price }}
       </span>
