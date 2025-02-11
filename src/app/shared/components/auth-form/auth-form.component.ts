@@ -90,7 +90,11 @@ export class AuthComponent implements OnInit, OnDestroy {
         });
         window.google.accounts.id.renderButton(
           document.getElementById('googleSignInButton'),
-          { theme: 'outline', size: 'large' }
+          {
+            theme: 'outline',
+            width: '180',
+            shape: 'pill',
+          }
         );
       } else {
         console.error('Google API not loaded');
