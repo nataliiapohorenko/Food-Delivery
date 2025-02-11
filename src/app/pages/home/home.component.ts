@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { FoodItemsService } from '../../services/food-items.service';
 import { RestaurantInterface } from '../../shared/models/restaurant.model';
@@ -11,6 +12,7 @@ import { CardTypeEnum } from '../../shared/models/card-type.enum';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RoutingConstants } from '../../constants/routes.constants';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +22,7 @@ import { RoutingConstants } from '../../constants/routes.constants';
     SecondaryCardComponent,
     CommonModule,
     RouterModule,
+    MatProgressBarModule,
   ],
   standalone: true,
 })
@@ -30,6 +33,9 @@ export class HomeComponent implements OnInit {
   private restaurantsService: RestaurantsService = inject(RestaurantsService);
   private foodItemsService: FoodItemsService = inject(FoodItemsService);
   private authService: AuthService = inject(AuthService);
+  private loaderService: LoaderService = inject(LoaderService);
+
+  loading = this.loaderService.loading;
 
   ngOnInit(): void {
     this.restaurants$ = this.restaurantsService.items$;

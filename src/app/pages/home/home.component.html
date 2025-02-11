@@ -4,12 +4,15 @@
     <img src="assets/icons/logout.svg" alt="logout" class="mr-2">
     Logout
   </button>
-  <div class="grow text-center">
+  <div class="grow text-center mx-2">
     <h3 class="align-center text-base">Deliver to</h3>
     <p class="text-primary">4102  Pretty View Lane</p>
   </div>
   <img src="assets/images/avatar.png" alt="avatar" class="size-10 rounded-lg">
 </header>
+
+<mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+
 <main class="mb-8 lg:m-auto lg:mb-2 lg:w-4/5 ">
   <div class="px-6 mb-32 m-auto lg:w-5/6">
     <h1 class="mr-16 mb-4 text-3xl font-bold">

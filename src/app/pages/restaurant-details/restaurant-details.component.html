@@ -34,6 +34,8 @@
       <rating-widget [data]="restaurant" type="page" />
     </div>
   </header>
+  <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+
   <main class="pl-6 pb-6 md:w-3/4 m-auto">
     <div>
       <h2 class="text-lg font-semibold mb-4">Featured items 

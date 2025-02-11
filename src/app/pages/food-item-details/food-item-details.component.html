@@ -11,6 +11,8 @@
     </div>
     <h1 class="text-3xl font-semibold mb-4">{{foodItem.name}}</h1>
   </header>
+  <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+  
   <main>
     <rating-widget [data]="foodItem" type="page" />
     <div class="flex justify-between items-center mt-4 mb-4">
