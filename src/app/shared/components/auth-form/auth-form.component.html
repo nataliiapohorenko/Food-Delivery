@@ -8,8 +8,8 @@
   
   <div class="md:w-2/3 m-auto">
     <h1 [ngClass]="{
-      'mt-16 mb-6 text-3xl font-semibold' : true,
-      'mt-28' : action === 'Login'
+      'mt-12 mb-4 text-3xl font-semibold' : true,
+      'mt-24' : action === 'Login'
     }">
       {{action}}
     </h1>
@@ -54,7 +54,7 @@
           {{ form.get('email') | validationError }}
         </span>
       </div>
-      <div class="relative mb-12">
+      <div class="relative mb-8">
         <label for="password"class="block text-sm font-medium text-darkGray">
           Password
         </label>
@@ -66,9 +66,7 @@
             'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched || isSubmitted)
           }"
         />
-        <span class="absolute bottom-4 right-3 flex items-center cursor-pointer text-gray-400">
-          o
-        </span>
+        <img src="assets/icons/eye.svg" alt="show/hide" class="absolute bottom-4 right-3 cursor-pointer" />
         <span
           *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty || isSubmitted)"
           class="absolute left-0 top-full text-sm text-red-500"
@@ -105,15 +103,15 @@
     </span>
   </div>
 
-  <div class="flex items-center my-10">
+  <div class="flex items-center my-8">
     <div class="flex-grow border-t border-darkGray"></div>
     <span class="px-3 text-darkGray text-sm">{{action}} with</span>
     <div class="flex-grow border-t border-darkGray"></div>
   </div>
 
   <div class="flex flex-wrap justify-around m-auto md:w-2/3">
-    <button class="flex items-center justify-center w-44 h-10 mb-4 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded-md 
-      shadow-sm hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500;" (click)="loginWithFacebook()">
+    <button class="flex items-center justify-center w-[180px] h-10 mb-4 bg-white text-gray-700 text-sm border border-gray-300 rounded-full 
+      shadow-sm hover:bg-blue-100 hover:bg-opacity-25 hover:border-blue-100 active:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500;" (click)="loginWithFacebook()">
       <img src="assets/icons/facebook.svg"
            alt="Google Logo"
            class="w-5 h-5 mr-1">
