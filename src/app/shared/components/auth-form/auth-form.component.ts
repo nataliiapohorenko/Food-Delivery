@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ValidationError } from '../../pipes/validation-error.pipe';
 import { Router, RouterLink } from '@angular/router';
 import { RoutingConstants } from '../../../constants/routes.constants';
@@ -19,12 +20,19 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { environment } from '../../../../environments/environment';
 import { Subscription } from 'rxjs';
+import { LoaderService } from '../../../services/loader.service';
 
 @Component({
   selector: 'auth-form',
   templateUrl: './auth-form.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ValidationError, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ValidationError,
+    RouterLink,
+    MatProgressBarModule,
+  ],
 })
 export class AuthComponent implements OnInit, OnDestroy {
   @Input() form!: FormGroup;
@@ -32,9 +40,11 @@ export class AuthComponent implements OnInit, OnDestroy {
   @Output() sendLoginForm = new EventEmitter<LoginFormInterface>();
   @Output() sendSignUpForm = new EventEmitter<SignUpFormInterface>();
   private router: Router = inject(Router);
-  private authService = inject(AuthService);
+  private authService: AuthService = inject(AuthService);
+  private loaderService: LoaderService = inject(LoaderService);
   private subscriptions: Subscription = new Subscription();
 
+  loading = this.loaderService.loading;
   RoutingConstants = RoutingConstants;
 
   isSubmitted = false;
