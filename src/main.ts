@@ -4,6 +4,8 @@ import { appConfig } from './app/app.config';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './app/interceptors/auth.interceptor';
 import { LoaderInterceptor } from './app/interceptors/loader.interceptor';
+import { ErrorInterceptor } from './app/interceptors/error.interceptor';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 bootstrapApplication(AppComponent, {
   ...appConfig,
@@ -11,5 +13,7 @@ bootstrapApplication(AppComponent, {
     ...appConfig.providers,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    MatSnackBar,
   ],
 }).catch(err => console.error(err));
