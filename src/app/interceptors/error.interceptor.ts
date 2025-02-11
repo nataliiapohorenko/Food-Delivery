@@ -7,11 +7,11 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private notificationservice: NotificationService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -27,10 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             errorMessage = error.error.message;
           }
         }
-        this.snackBar.open(errorMessage, 'Close', {
-          duration: 5000,
-          panelClass: ['error-snackbar'],
-        });
+        this.notificationservice.showError(errorMessage);
 
         return throwError(() => error);
       })
