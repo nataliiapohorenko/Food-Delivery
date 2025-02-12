@@ -15,9 +15,6 @@
         </div>
       </div>
       <like-button [data]="restaurant" (toggleFavorite)="toggleFavourite(restaurant._id, restaurant.type)"/>
-      <button class="absolute size-10 bg-white top-2 left-2 rounded-xl text-xl font-bold" routerLink="/home">
-        &lt;
-      </button>  
     </div>
     <div class="flex flex-col items-center mt-12">
       <h1 class="mb-1 text-xl font-bold">{{restaurant.name}}</h1>

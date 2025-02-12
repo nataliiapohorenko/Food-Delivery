@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RoutingConstants } from '../../constants/routes.constants';
 import { LoaderService } from '../../services/loader.service';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-home',
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit {
   private foodItemsService: FoodItemsService = inject(FoodItemsService);
   private authService: AuthService = inject(AuthService);
   private loaderService: LoaderService = inject(LoaderService);
+  private layoutService: LayoutService = inject(LayoutService);
 
   loading = this.loaderService.loading;
   isOpen = false;
@@ -44,6 +46,10 @@ export class HomeComponent implements OnInit {
 
     this.restaurantsService.getItems().subscribe();
     this.foodItemsService.getItems().subscribe();
+
+    this.layoutService.sidebarToggle$.subscribe(() => {
+      this.isOpen = !this.isOpen;
+    });
   }
 
   toggleSidebar() {

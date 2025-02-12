@@ -4,10 +4,7 @@
       <img [src]="foodItem.imgUrl" [alt]="foodItem.name"
         class="rounded-xl w-full h-52 md:h-84 object-cover"
       >
-      <like-button [data]="foodItem" />
-      <button class="absolute size-10 bg-white top-2 left-2 rounded-xl text-xl font-bold" [routerLink]="['/', routingConstants.RESTAURANTS, foodItem.restaurantId]">
-        &lt;
-      </button>  
+      <like-button [data]="foodItem" />  
     </div>
     <h1 class="text-3xl font-semibold mb-4">{{foodItem.name}}</h1>
   </header>

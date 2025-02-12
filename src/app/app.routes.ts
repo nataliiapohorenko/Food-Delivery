@@ -10,27 +10,60 @@ import { RoutingConstants } from './constants/routes.constants';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LayoutComponent } from './layout/layout.component';
+import { RouteConfigInterface } from './shared/models/route-config.model';
 
 export const routes: Routes = [
-  { path: '', redirectTo: RoutingConstants.HOME, pathMatch: 'full' },
   { path: RoutingConstants.SIGNUP, component: SignUpComponent },
   { path: RoutingConstants.LOGIN, component: LoginComponent },
   {
-    path: RoutingConstants.HOME,
-    canActivate: [AuthGuard],
-    component: HomeComponent,
-  },
-  {
-    path: `${RoutingConstants.RESTAURANTS}/:${RoutingConstants.ID}`,
-    component: RestaurantDetailsComponent,
-    canActivate: [AuthGuard, RestaurantGuard],
-    resolve: { restaurant: RestaurantResolver },
-  },
-  {
-    path: `${RoutingConstants.FOOD_ITEMS}/:${RoutingConstants.ID}`,
-    component: FoodItemDetailsComponent,
-    canActivate: [AuthGuard, FoodItemGuard],
-    resolve: { foodItem: FoodItemResolver },
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', redirectTo: RoutingConstants.HOME, pathMatch: 'full' },
+      {
+        path: RoutingConstants.HOME,
+        canActivate: [AuthGuard],
+        component: HomeComponent,
+        data: {
+          displayHeader: true,
+          buttonAction: {
+            type: 'sidebar',
+          },
+          headerTitle: 'Deliver to',
+          headerAddress: '4102  Pretty View Lane',
+          displayImg: 'assets/images/avatar.png',
+          displayFooter: true,
+        } as RouteConfigInterface,
+      },
+      {
+        path: `${RoutingConstants.RESTAURANTS}/:${RoutingConstants.ID}`,
+        component: RestaurantDetailsComponent,
+        canActivate: [AuthGuard, RestaurantGuard],
+        resolve: { restaurant: RestaurantResolver },
+        data: {
+          displayHeader: false,
+          buttonAction: {
+            type: 'router',
+            link: RoutingConstants.HOME,
+          },
+          displayFooter: false,
+        } as RouteConfigInterface,
+      },
+      {
+        path: `${RoutingConstants.FOOD_ITEMS}/:${RoutingConstants.ID}`,
+        component: FoodItemDetailsComponent,
+        canActivate: [AuthGuard, FoodItemGuard],
+        resolve: { foodItem: FoodItemResolver },
+        data: {
+          displayHeader: false,
+          buttonAction: {
+            type: 'router',
+          },
+          displayFooter: false,
+        } as RouteConfigInterface,
+      },
+    ],
   },
   { path: '**', redirectTo: RoutingConstants.HOME },
 ];

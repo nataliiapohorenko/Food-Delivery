@@ -3,14 +3,16 @@
   id="overlay"
   class="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-50"
   (click)="closeSidebar($event)"
+  (keydown.enter)="closeSidebar($event)"
+  tabindex="0"
 ></div>
 
 <!-- Sidebar -->
 <div
-  class="fixed top-0 left-0 h-full bg-gray-100 shadow-lg w-64 transform transition-transform duration-300 z-50"
-  [ngClass]="{'-translate-x-full': !isOpen, 'translate-x-0': isOpen}"
+  class="fixed top-0 -left-64 h-full bg-gray-100 shadow-lg w-64 transform transition-transform duration-300 z-50"
+  [ngClass]="{'translate-x-0': !isOpen, 'translate-x-full': isOpen}"
 >
-  <div class="pt-16 px-6 pb-8 flex flex-col h-full">
+  <div class="pt-12 px-6 pb-8 flex flex-col h-full">
     <img
       src="assets/images/avatar.png"
       alt="avatar"
@@ -20,55 +22,42 @@
     <h3 class="text-xs text-darkGray mb-6">
       Userexample.com
     </h3>
-    <ul class="space-y-2">
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+    <ul class="space-y-4">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-orders.svg" alt="orders" class="mr-2" />
         <span>My Orders</span>
       </li>
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-profile.svg" alt="profile" class="mr-2" />
         <span>My Profile</span>
       </li>
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-location.svg" alt="" class="mr-2" />
         <span>Delivery Adress</span>
       </li>
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-payment.svg" alt="" class="mr-2" />
         <span>Payment Methods</span>
       </li>
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-contact.svg" alt="" class="mr-2" />
         <span>Contact Us</span>
       </li>
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-setting.svg" alt="" class="mr-2" />
         <span>Settings</span>
       </li>
-      <li class="flex items-center hover:bg-gray-100 p-2 rounded">
+      <li class="flex items-center hover:text-darkGray cursor-pointer">
         <img src="assets/icons/nav-help.svg" alt="" class="mr-2" />
         <span>Helps & FAQs</span>
       </li>
     </ul>
-    <button (click)="logout()" class="flex max-w-max mt-auto p-2 pr-4 bg-primary rounded-full text-white items-center shadow-lg shadow-orange-300">
+    <button (click)="logout()" class="flex max-w-max mt-auto p-2 pr-4 bg-primary rounded-full text-white items-center shadow-lg shadow-orange-300 hover:-translate-y-1 transition-transform duration-200">
       <img src="assets/icons/logout.svg" alt="logout" class="mr-2">
       Logout
     </button>
   </div>
 </div>
-
-<header class="flex items-center px-6 py-8 lg:mb-4">
-  <button (click)="toggleSidebar()"
-    class="size-10 rounded-lg shadow-md"
-  >
-    ☰
-  </button>
-  <div class="grow text-center mx-2">
-    <h3 class="align-center text-base">Deliver to</h3>
-    <p class="text-primary">4102  Pretty View Lane</p>
-  </div>
-  <img src="assets/images/avatar.png" alt="avatar" class="size-10 rounded-lg">
-</header>
 
 <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
 
@@ -112,10 +101,3 @@
     </div>
   </div>
 </main>
-<footer class="fixed -bottom-1 right-0 left-0 p-4 flex justify-between bg-white z-20 lg:hidden">
-  <img src="assets/icons/compass.svg" alt="navigation">
-  <img src="assets/icons/location.svg" alt="location">
-  <img src="assets/icons/cart.svg" alt="cart">
-  <img src="assets/icons/grey-heart-big.svg" alt="favourite">
-  <img src="assets/icons/bell.svg" alt="notification">
-</footer>
