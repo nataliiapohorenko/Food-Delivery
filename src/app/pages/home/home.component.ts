@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
   private loaderService: LoaderService = inject(LoaderService);
 
   loading = this.loaderService.loading;
+  isOpen = false;
 
   ngOnInit(): void {
     this.restaurants$ = this.restaurantsService.items$;
@@ -43,6 +44,16 @@ export class HomeComponent implements OnInit {
 
     this.restaurantsService.getItems().subscribe();
     this.foodItemsService.getItems().subscribe();
+  }
+
+  toggleSidebar() {
+    this.isOpen = !this.isOpen;
+  }
+
+  closeSidebar(event: Event) {
+    if ((event.target as HTMLElement).id === 'overlay') {
+      this.isOpen = false;
+    }
   }
 
   toggleFavourite(id: string, type: CardTypeEnum): void {
