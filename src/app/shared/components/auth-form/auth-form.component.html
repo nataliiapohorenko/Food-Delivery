@@ -24,11 +24,11 @@
           placeholder="Full Name"
           formControlName="name"
           [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-            'border-red-500': form.get('name')?.invalid && (form.get('name')?.touched || isSubmitted)
+            'border-red-500': form.get('name')?.invalid && (form.get('name')?.touched)
           }"
         />
         <span
-          *ngIf="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty || isSubmitted)"
+          *ngIf="form.get('name')?.invalid && (form.get('name')?.touched || form.get('name')?.dirty)"
           class="absolute left-0 top-full text-sm text-red-500"
         >
           {{ form.get('name') | validationError }}
@@ -44,11 +44,11 @@
           placeholder="Enter your email"
           formControlName="email"
           [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-            'border-red-500': form.get('email')?.invalid && (form.get('email')?.touched || isSubmitted)
+            'border-red-500': form.get('email')?.invalid && (form.get('email')?.touched)
           }"
         />
         <span
-          *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty || isSubmitted)"
+          *ngIf="form.get('email')?.invalid && (form.get('email')?.touched || form.get('email')?.dirty)"
           class="absolute left-0 top-full text-sm text-red-500"
         >
           {{ form.get('email') | validationError }}
@@ -59,16 +59,18 @@
           Password
         </label>
         <input
-          type="password"
+          [type]="passwordVisible ? 'text' : 'password'"
           placeholder="Password"
           formControlName="password"
           [ngClass]="{'block w-full p-2 mt-1 text-lg placeholder-lightGray border border-lightGray rounded-lg focus:outline-none focus:border-primary' : true,
-            'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched || isSubmitted)
+            'border-red-500': form.get('password')?.invalid && (form.get('password')?.touched)
           }"
         />
-        <img src="assets/icons/eye.svg" alt="show/hide" class="absolute bottom-4 right-3 cursor-pointer" />
+        <img [src]="'assets/icons/' + (passwordVisible ? 'eye-off.svg' : 'eye.svg')" 
+          alt="show/hide" class="absolute bottom-4 right-3 size-4 cursor-pointer" 
+          (click)="togglePasswordVisibility()" (keydown)="togglePasswordVisibility()" tabindex="0"/>
         <span
-          *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty || isSubmitted)"
+          *ngIf="form.get('password')?.invalid && (form.get('password')?.touched || form.get('password')?.dirty)"
           class="absolute left-0 top-full text-sm text-red-500"
         >
           {{ form.get('password') | validationError }}

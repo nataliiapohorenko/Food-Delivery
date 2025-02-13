@@ -1,0 +1,30 @@
+<header *ngIf="routeConfig?.displayHeader" class="flex items-center px-6 py-8 lg:mb-4">
+  <button *ngIf="routeConfig?.buttonAction?.type === RouteButtonActionEnum.SideBar" (click)="onButtonSidebarClick()"
+    class="size-10 rounded-lg shadow-md"
+  >
+    ☰
+  </button>
+  <div class="grow text-center mx-2">
+    <h3 class="align-center text-base">{{routeConfig.headerTitle}}</h3>
+    <p *ngIf="routeConfig?.headerAddress" class="text-primary">4102  Pretty View Lane</p>
+  </div>
+  <img [src]="routeConfig.displayImg" alt="avatar" class="size-10 rounded-lg">
+</header>
+<header *ngIf="!routeConfig?.displayHeader && routeConfig?.buttonAction?.type === RouteButtonActionEnum.Router">
+  <button class="absolute size-10 bg-white top-8 left-8 rounded-xl text-xl font-bold z-20" [routerLink]="[routeConfig.buttonAction.link]">
+    &lt;
+  </button>
+</header>
+<mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer *ngIf="routeConfig?.displayFooter" class="fixed -bottom-1 right-0 left-0 p-4 flex justify-between bg-white z-20 lg:hidden">
+  <img src="assets/icons/compass.svg" alt="navigation">
+  <img src="assets/icons/location.svg" alt="location">
+  <img src="assets/icons/cart.svg" alt="cart">
+  <img src="assets/icons/grey-heart-big.svg" alt="favourite">
+  <img src="assets/icons/bell.svg" alt="notification">
+</footer>
