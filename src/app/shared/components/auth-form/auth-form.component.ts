@@ -39,29 +39,36 @@ export class AuthComponent implements OnInit, OnDestroy {
   @Input() action!: string;
   @Output() sendLoginForm = new EventEmitter<LoginFormInterface>();
   @Output() sendSignUpForm = new EventEmitter<SignUpFormInterface>();
+
+  passwordVisible = false;
+  RoutingConstants = RoutingConstants;
+
   private router: Router = inject(Router);
   private authService: AuthService = inject(AuthService);
   private loaderService: LoaderService = inject(LoaderService);
   private subscriptions: Subscription = new Subscription();
 
   loading = this.loaderService.loading;
-  RoutingConstants = RoutingConstants;
-
-  isSubmitted = false;
 
   ngOnInit(): void {
     this.initializeGoogleLogIn();
   }
 
   onSubmit(event: Event): void {
-    this.isSubmitted = true;
     event.preventDefault();
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     if (this.form.contains('name')) {
       this.sendSignUpForm.emit(this.form.value as SignUpFormInterface);
     } else {
       this.sendLoginForm.emit(this.form.value as LoginFormInterface);
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   async loginWithFacebook() {

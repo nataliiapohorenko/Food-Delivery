@@ -17,11 +17,14 @@ import { LayoutService } from '../services/layout.service';
 import { RouteConfigInterface } from '../shared/models/route-config.model';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
+import { RouteButtonActionEnum } from '../shared/models/route-button-action.enum';
+import { LoaderService } from '../services/loader.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  imports: [RouterOutlet, CommonModule, RouterLink],
+  imports: [RouterOutlet, CommonModule, RouterLink, MatProgressBarModule],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   routeConfig: RouteConfigInterface = {
@@ -30,14 +33,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
     displayFooter: true,
   };
 
+  RouteButtonActionEnum = RouteButtonActionEnum;
+
   private router: Router = inject(Router);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private layoutService: LayoutService = inject(LayoutService);
   private cdRef: ChangeDetectorRef = inject(ChangeDetectorRef);
-
+  private loaderService: LoaderService = inject(LoaderService);
   private destroy$ = new Subject<void>();
 
+  loading = this.loaderService.loading;
+
   ngOnInit(): void {
+    this.subscribeToRouteDataChanges();
+  }
+
+  subscribeToRouteDataChanges(): void {
     this.setData();
 
     this.router.events
@@ -57,7 +68,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
     this.routeConfig = currentRoute.snapshot.data as RouteConfigInterface;
     if (
-      this.routeConfig.buttonAction.type === 'router' &&
+      this.routeConfig.buttonAction.type === RouteButtonActionEnum.Router &&
       !this.routeConfig.buttonAction.link
     )
       this.setButtonLink();

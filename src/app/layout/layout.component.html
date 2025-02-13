@@ -1,5 +1,5 @@
 <header *ngIf="routeConfig?.displayHeader" class="flex items-center px-6 py-8 lg:mb-4">
-  <button *ngIf="routeConfig?.buttonAction?.type === 'sidebar'" (click)="onButtonSidebarClick()"
+  <button *ngIf="routeConfig?.buttonAction?.type === RouteButtonActionEnum.SideBar" (click)="onButtonSidebarClick()"
     class="size-10 rounded-lg shadow-md"
   >
     ☰
@@ -10,11 +10,12 @@
   </div>
   <img [src]="routeConfig.displayImg" alt="avatar" class="size-10 rounded-lg">
 </header>
-<header *ngIf="!routeConfig?.displayHeader && routeConfig?.buttonAction?.type === 'router'">
+<header *ngIf="!routeConfig?.displayHeader && routeConfig?.buttonAction?.type === RouteButtonActionEnum.Router">
   <button class="absolute size-10 bg-white top-8 left-8 rounded-xl text-xl font-bold z-20" [routerLink]="[routeConfig.buttonAction.link]">
     &lt;
   </button>
 </header>
+<mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
 
 <main>
   <router-outlet></router-outlet>

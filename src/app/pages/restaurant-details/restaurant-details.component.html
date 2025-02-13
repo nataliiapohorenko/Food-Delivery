@@ -1,5 +1,5 @@
-<div *ngIf="restaurantDetails$ | async as restaurant">
-  <header class="p-6">
+<main *ngIf="restaurantDetails$ | async as restaurant">
+  <div class="p-6">
     <div class="relative">
       <img [src]="restaurant.imgUrl" [alt]="restaurant.name"
       class="rounded-xl w-full h-[150px] object-cover"
@@ -30,10 +30,9 @@
       <delivery-widget [data]="restaurant"/>
       <rating-widget [data]="restaurant" type="page" />
     </div>
-  </header>
-  <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+  </div>
 
-  <main class="pl-6 pb-6 md:w-3/4 m-auto">
+  <div class="pl-6 pb-6 md:w-3/4 m-auto">
     <div>
       <h2 class="text-lg font-semibold mb-4">Featured items 
         <span class="text-xs text-white bg-yellow-300 px-1 py-0.5 rounded-md">{{restaurant.foodItems.length}}</span>
@@ -67,5 +66,5 @@
         </app-secondary-card>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</main>

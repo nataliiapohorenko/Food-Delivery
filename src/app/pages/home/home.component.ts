@@ -1,7 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { FoodItemsService } from '../../services/food-items.service';
 import { RestaurantInterface } from '../../shared/models/restaurant.model';
@@ -9,10 +8,9 @@ import { FoodItemInterface } from '../../shared/models/food-item.model';
 import { PrimaryCardComponent } from '../../shared/components/primary-card/primary-card.component';
 import { SecondaryCardComponent } from '../../shared/components/secondary-card/secondary-card.component';
 import { CardTypeEnum } from '../../shared/models/card-type.enum';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RoutingConstants } from '../../constants/routes.constants';
-import { LoaderService } from '../../services/loader.service';
 import { LayoutService } from '../../services/layout.service';
 
 @Component({
@@ -23,33 +21,39 @@ import { LayoutService } from '../../services/layout.service';
     SecondaryCardComponent,
     CommonModule,
     RouterModule,
-    MatProgressBarModule,
   ],
   standalone: true,
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   restaurants$!: Observable<RestaurantInterface[]>;
   foodItems$!: Observable<FoodItemInterface[]>;
   private router: Router = inject(Router);
   private restaurantsService: RestaurantsService = inject(RestaurantsService);
   private foodItemsService: FoodItemsService = inject(FoodItemsService);
   private authService: AuthService = inject(AuthService);
-  private loaderService: LoaderService = inject(LoaderService);
   private layoutService: LayoutService = inject(LayoutService);
+  private destroy$ = new Subject<void>();
 
-  loading = this.loaderService.loading;
   isOpen = false;
 
   ngOnInit(): void {
+    this.subscribeToDataChanges();
+  }
+  subscribeToDataChanges(): void {
     this.restaurants$ = this.restaurantsService.items$;
     this.foodItems$ = this.foodItemsService.items$;
 
-    this.restaurantsService.getItems().subscribe();
-    this.foodItemsService.getItems().subscribe();
+    this.restaurantsService
+      .getItems()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+    this.foodItemsService.getItems().pipe(takeUntil(this.destroy$)).subscribe();
 
-    this.layoutService.sidebarToggle$.subscribe(() => {
-      this.isOpen = !this.isOpen;
-    });
+    this.layoutService.sidebarToggle$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.isOpen = !this.isOpen;
+      });
   }
 
   toggleSidebar() {
@@ -76,5 +80,10 @@ export class HomeComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate([RoutingConstants.LOGIN]);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

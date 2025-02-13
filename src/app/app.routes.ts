@@ -12,6 +12,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LayoutComponent } from './layout/layout.component';
 import { RouteConfigInterface } from './shared/models/route-config.model';
+import { RouteButtonActionEnum } from './shared/models/route-button-action.enum';
 
 export const routes: Routes = [
   { path: RoutingConstants.SIGNUP, component: SignUpComponent },
@@ -28,7 +29,7 @@ export const routes: Routes = [
         data: {
           displayHeader: true,
           buttonAction: {
-            type: 'sidebar',
+            type: RouteButtonActionEnum.SideBar,
           },
           headerTitle: 'Deliver to',
           headerAddress: '4102  Pretty View Lane',
@@ -44,7 +45,7 @@ export const routes: Routes = [
         data: {
           displayHeader: false,
           buttonAction: {
-            type: 'router',
+            type: RouteButtonActionEnum.Router,
             link: RoutingConstants.HOME,
           },
           displayFooter: false,
@@ -58,7 +59,7 @@ export const routes: Routes = [
         data: {
           displayHeader: false,
           buttonAction: {
-            type: 'router',
+            type: RouteButtonActionEnum.Router,
           },
           displayFooter: false,
         } as RouteConfigInterface,
