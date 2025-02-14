@@ -1,10 +1,10 @@
-<main  class="p-6 md:w-2/3 m-auto">
+<main *ngIf="foodItemDetails$ | async as foodItem" class="p-6 md:w-2/3 m-auto">
   <div>
     <div class="relative mb-6">
       <img [src]="foodItem.imgUrl" [alt]="foodItem.name"
         class="rounded-xl w-full h-52 md:h-84 object-cover"
       >
-      <like-button [data]="foodItem" />  
+      <like-button [data]="foodItem" (toggleFavorite)="toggleFavourite()" />  
     </div>
     <h1 class="text-3xl font-semibold mb-4">{{foodItem.name}}</h1>
   </div>
@@ -19,7 +19,7 @@
         <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md"
           (click)="decrement(foodItem)"
         >-</button>
-        <span class="mx-2 font-semibold">{{ itemCounts.get(foodItem) || 1 | number:'2.0-0' }}</span>
+        <span class="mx-2 font-semibold">{{ getCount(foodItem) || 1 | number:'2.0-0' }}</span>
         <button class="size-6 text-center bg-primary text-white rounded-full shadow-md"
           (click)="increment(foodItem)"
         >+</button>
@@ -34,15 +34,17 @@
         <label class="flex items-center cursor-pointer mb-2">
           <span class="grow text-xs">{{ addon.name }}</span>
           <span class="text-xs text-darkGray mr-4">+${{ addon.price }}</span>
-          <input type="checkbox" class="sr-only peer" (change)="toggleAddon(addon)" />
+          <input type="checkbox" class="sr-only peer" (change)="toggleAddon(addon)" [attr.data-addon]="addon._id" />
           <div class="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-primary peer-checked:bg-primary transition-all duration-200 ease-in-out 
               peer-checked:shadow-[inset_0_0_0_4px_white]">
           </div>
         </label>
-        <div *ngIf="addon.countable && itemCounts.has(addon)" class="flex items-center">
-          <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md" (click)="decrement(addon)">-</button>
-          <span class="mx-2 font-semibold">{{ itemCounts.get(addon) | number:'2.0-0' }}</span>
-          <button class="size-6 text-center bg-primary text-white rounded-full shadow-md" (click)="increment(addon)">+</button>
+        <div *ngIf="addon.countable && (itemCounts$ | async) as counts">
+          <div *ngIf="counts.get(addon._id) && counts?.get(addon._id)! > 0" class="flex items-center">
+            <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md" (click)="decrement(addon)">-</button>
+            <span class="mx-2 font-semibold">{{ counts?.get(addon._id) | number:'2.0-0' }}</span>
+            <button class="size-6 text-center bg-primary text-white rounded-full shadow-md" (click)="increment(addon)">+</button>
+          </div>
         </div>
       </div>  
     </div>
