@@ -6,6 +6,10 @@ import { LikeButtonComponent } from '../../shared/components/like-button/like-bu
 import { RatingWidgetComponent } from '../../shared/components/rating-widget/rating-widget.component';
 import { RoutingConstants } from '../../constants/routes.constants';
 import { LayoutService } from '../../services/layout.service';
+import { FoodItemsService } from '../../services/food-items.service';
+import { Observable } from 'rxjs';
+import { CartService } from '../../services/cart.service';
+import { AddonInterface } from '../../shared/models/addon.model';
 
 @Component({
   selector: 'app-food-item-details',
@@ -23,9 +27,38 @@ export class FoodItemDetailsComponent implements OnInit {
   foodItem: FoodItemInterface =
     inject(ActivatedRoute).snapshot.data['foodItem'];
   private layoutService: LayoutService = inject(LayoutService);
+  private foodItemsService: FoodItemsService = inject(FoodItemsService);
+  private cartService: CartService = inject(CartService);
+
+  foodItemDetails$!: Observable<FoodItemInterface>;
+  itemCounts$ = this.cartService.itemCounts$;
 
   ngOnInit(): void {
     this.setBackButtonLink();
+    this.foodItemsService.setFoodItemDetails(this.foodItem);
+    this.foodItemDetails$ = this.foodItemsService.foodItemDetails$;
+    console.log(this.foodItemDetails$);
+    this.cartService.addFoodItem(this.foodItem);
+  }
+
+  increment(item: FoodItemInterface | AddonInterface) {
+    this.cartService.increment(item);
+  }
+
+  decrement(item: FoodItemInterface | AddonInterface) {
+    this.cartService.decrement(item);
+  }
+
+  getCount(item: FoodItemInterface | AddonInterface): number {
+    return this.cartService.getCount(item);
+  }
+
+  toggleAddon(addon: AddonInterface) {
+    this.cartService.toggleAddon(addon);
+  }
+
+  toggleFavourite(): void {
+    this.foodItemsService.toggleFoodItemDetailsFavourite();
   }
 
   setBackButtonLink(): void {

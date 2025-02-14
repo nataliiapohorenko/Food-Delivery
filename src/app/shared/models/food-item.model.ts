@@ -13,6 +13,7 @@ export interface FoodItemInterface {
   ingredients: string[];
   restaurantId: string;
   addons: {
+    _id: string;
     name: string;
     price: number;
     countable: boolean;

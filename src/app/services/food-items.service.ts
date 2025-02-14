@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { FoodItemInterface } from '../shared/models/food-item.model';
 import { environment } from '../../environments/environment';
@@ -12,6 +12,9 @@ import { RoutingConstants } from '../constants/routes.constants';
 })
 export class FoodItemsService extends BaseService<FoodItemInterface> {
   protected apiUrl = `${environment.apiUrl}/${RoutingConstants.FOOD_ITEMS}`;
+  protected foodItemDetailsSubject: BehaviorSubject<FoodItemInterface> =
+    new BehaviorSubject<FoodItemInterface>({} as FoodItemInterface);
+  foodItemDetails$ = this.foodItemDetailsSubject.asObservable();
 
   override getItems(): Observable<FoodItemInterface[]> {
     return super.getItems().pipe(
@@ -32,5 +35,21 @@ export class FoodItemsService extends BaseService<FoodItemInterface> {
 
   getItemById(id: string): Observable<FoodItemInterface> {
     return this.http.get<FoodItemInterface>(`${this.apiUrl}/${id}`);
+  }
+
+  public setFoodItemDetails(details: FoodItemInterface): void {
+    this.foodItemDetailsSubject.next(details);
+  }
+
+  toggleFoodItemDetailsFavourite(): void {
+    const currentDetails = this.foodItemDetailsSubject.getValue();
+    if (!currentDetails) {
+      return;
+    }
+    const updatedDetails: FoodItemInterface = {
+      ...currentDetails,
+      isFavourite: !currentDetails.isFavourite,
+    };
+    this.foodItemDetailsSubject.next(updatedDetails);
   }
 }
