@@ -16,9 +16,13 @@
         <span class="text-xl font-medium">$</span>{{ foodItem.price }}
       </span>
       <div>
-        <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md">-</button>
-        <span class="mx-2 font-semibold">02</span>
-        <button class="size-6 text-center bg-primary text-white rounded-full shadow-md">+</button>
+        <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md"
+          (click)="decrement(foodItem)"
+        >-</button>
+        <span class="mx-2 font-semibold">{{ itemCounts.get(foodItem) || 1 | number:'2.0-0' }}</span>
+        <button class="size-6 text-center bg-primary text-white rounded-full shadow-md"
+          (click)="increment(foodItem)"
+        >+</button>
       </div>
     </div>
     <p class="mb-6 text-sm text-darkGray">
@@ -30,12 +34,23 @@
         <label class="flex items-center cursor-pointer mb-2">
           <span class="grow text-xs">{{ addon.name }}</span>
           <span class="text-xs text-darkGray mr-4">+${{ addon.price }}</span>
-          <input type="checkbox" class="sr-only peer" />
+          <input type="checkbox" class="sr-only peer" (change)="toggleAddon(addon)" />
           <div class="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-primary peer-checked:bg-primary transition-all duration-200 ease-in-out 
               peer-checked:shadow-[inset_0_0_0_4px_white]">
           </div>
         </label>
+        <div *ngIf="addon.countable && itemCounts.has(addon)" class="flex items-center">
+          <button class="size-6 text-center border border-primary text-primary rounded-full shadow-md" (click)="decrement(addon)">-</button>
+          <span class="mx-2 font-semibold">{{ itemCounts.get(addon) | number:'2.0-0' }}</span>
+          <button class="size-6 text-center bg-primary text-white rounded-full shadow-md" (click)="increment(addon)">+</button>
+        </div>
       </div>  
     </div>
   </div>
+  <button class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center bg-primary max-w-max text-white p-2 pr-4 rounded-full" >
+    <div class="bg-white mr-2 p-2 rounded-full inline-block">
+      <img src="assets/icons/cart.svg" alt="cart" class="size-4">
+    </div>
+    ADD TO CART
+  </button>
 </main>
